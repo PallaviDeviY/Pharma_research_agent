@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pharma Intelligence</title>
+  <style>
+    :root { color-scheme: light; --ink:#14243a; --muted:#64748b; --line:#dce4ee; --paper:#f5f8fc; --white:#fff; --blue:#2856a6; --blue-soft:#e9f0ff; --teal:#168476; --warn:#fff7e6; --shadow:0 10px 30px rgba(26,48,81,.07); }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
+    header { background:var(--white); border-bottom:1px solid var(--line); }
+    .top { max-width:1160px; margin:auto; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .brand { display:flex; align-items:center; gap:13px; }
+    .mark { width:40px; height:40px; border-radius:13px; display:grid; place-items:center; color:white; background:linear-gradient(145deg,#2d67bd,#173e7d); font-weight:800; font-size:18px; }
+    h1 { margin:0; font-size:20px; letter-spacing:-.02em; }
+    .tagline { color:var(--muted); font-size:12px; margin-top:2px; }
+    .pill { border:1px solid var(--line); border-radius:999px; background:#f9fbfe; color:#39506e; padding:7px 12px; font-size:12px; white-space:nowrap; }
+    main { max-width:1160px; padding:30px 24px 64px; margin:auto; }
+    .intro { margin-bottom:22px; }
+    .intro h2 { margin:0 0 6px; font-size:26px; letter-spacing:-.035em; }
+    .intro p { margin:0; max-width:760px; color:var(--muted); }
+    .grid { display:grid; grid-template-columns:minmax(270px,350px) minmax(0,1fr); gap:20px; align-items:start; }
+    .card { background:var(--white); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); }
+    .controls { padding:20px; }
+    h3 { margin:0; font-size:15px; }
+    .section-note { margin:4px 0 16px; color:var(--muted); font-size:12px; }
+    .scope { display:grid; gap:9px; margin:12px 0 18px; }
+    .check { display:flex; align-items:center; gap:9px; color:#314761; font-size:13px; }
+    input[type=checkbox] { accent-color:var(--blue); width:15px; height:15px; }
+    button { border:0; border-radius:10px; min-height:42px; padding:10px 14px; background:var(--blue); color:white; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; }
+    button:hover { background:#204987; }
+    button:disabled { opacity:.6; cursor:wait; }
+    .secondary { width:100%; background:#edf3ff; color:#214b8a; }
+    .secondary:hover { background:#dfeaff; }
+    .status { border-top:1px solid var(--line); margin-top:17px; padding-top:14px; color:var(--muted); font-size:12px; }
+    .status strong { color:var(--ink); }
+    .query { padding:20px; }
+    label { display:block; font-weight:650; font-size:13px; margin-bottom:8px; }
+    textarea { display:block; width:100%; min-height:100px; resize:vertical; border:1px solid #cdd8e5; border-radius:11px; padding:12px 13px; color:var(--ink); font-family:inherit; font-size:14px; line-height:1.5; outline:none; }
+    textarea:focus { border-color:#5480c0; box-shadow:0 0 0 3px #e6efff; }
+    .ask-row { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-top:12px; }
+    .hint { font-size:12px; color:var(--muted); }
+    .examples { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+    .example { border:1px solid var(--line); background:white; color:#425875; border-radius:999px; font-size:11px; padding:6px 10px; cursor:pointer; }
+    .example:hover { border-color:#94afd3; background:#f7faff; }
+    .output { display:none; margin-top:18px; overflow:hidden; }
+    .output.show { display:block; }
+    .output-head { padding:15px 18px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .output-head h3 { font-size:15px; }
+    .badge { color:#28645e; background:#e6f5f1; padding:4px 8px; border-radius:999px; font-size:11px; }
+    .badge.abstain { color:#8a5b08; background:#fff0cb; }
+    .answer { padding:18px; white-space:pre-wrap; overflow-wrap:anywhere; font-size:13px; }
+    .subsection { padding:16px 18px; border-top:1px solid var(--line); }
+    .subsection h4 { margin:0 0 10px; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:#52657e; }
+    .evidence { display:grid; gap:10px; }
+    .evidence-item { border:1px solid var(--line); background:#fbfcfe; border-radius:11px; padding:12px; }
+    .evidence-title { font-weight:650; font-size:13px; }
+    .evidence-meta { margin-top:3px; font-size:11px; color:var(--muted); }
+    .evidence-excerpt { margin:8px 0 0; font-size:12px; color:#42546c; }
+    a { color:#2456a0; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .citations { display:flex; flex-wrap:wrap; gap:7px; }
+    .citation { border:1px solid #d7e2f0; border-radius:8px; padding:5px 8px; font-size:11px; background:#f7faff; }
+    .limitations { margin:0; padding-left:18px; color:#53657b; font-size:12px; }
+    .empty { border:1px dashed #c5d1e0; border-radius:14px; background:#fbfdff; padding:26px; color:var(--muted); text-align:center; font-size:13px; }
+    .error { color:#9d3030; }
+    @media(max-width:760px) { .grid { grid-template-columns:1fr; } .top { padding:16px; } main { padding:22px 16px 48px; } .pill { display:none; } .intro h2 { font-size:23px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <div class="brand"><div class="mark">Rx</div><div><h1>Pharma Intelligence</h1><div class="tagline">A source-traceable pharmaceutical research workspace</div></div></div>
+      <div class="pill">Evidence snapshot · Four-drug scope</div>
+    </div>
+  </header>
+  <main>
+    <section class="intro">
+      <h2>Research with evidence you can inspect.</h2>
+      <p>Search public trial records, FDA labels and PubMed publications together. Every returned passage links to its source, and the assistant abstains when the local evidence is missing.</p>
+    </section>
+    <div class="grid">
+      <aside class="card controls">
+        <h3>Refresh public sources</h3>
+        <p class="section-note">Choose a focused drug set. Responses are saved under <code>data/raw</code>. If you downloaded files, import them from the matching source folders.</p>
+        <div class="scope" id="scope">
+          <label class="check"><input type="checkbox" value="semaglutide" checked> Semaglutide</label>
+          <label class="check"><input type="checkbox" value="empagliflozin" checked> Empagliflozin</label>
+          <label class="check"><input type="checkbox" value="dapagliflozin" checked> Dapagliflozin</label>
+          <label class="check"><input type="checkbox" value="liraglutide" checked> Liraglutide</label>
+        </div>
+        <button class="secondary" id="refresh">Fetch selected records</button>
+        <button class="secondary" id="importRaw" style="margin-top:8px">Import files from data/raw</button>
+        <div class="status" id="status">Checking local evidence…</div>
+      </aside>
+      <section>
+        <div class="card query">
+          <label for="question">Your research question</label>
+          <textarea id="question" placeholder="Compare the trial landscape and regulatory label warnings for semaglutide and empagliflozin."></textarea>
+          <div class="ask-row"><span class="hint">Research summaries only · not for personal medical advice</span><button id="ask">Research</button></div>
+          <div class="examples" aria-label="Example questions">
+            <button class="example" data-query="How many semaglutide trials are in the local snapshot, and what phases are reported?">Trial landscape</button>
+            <button class="example" data-query="Compare FDA label warnings for semaglutide and liraglutide.">Compare labels</button>
+            <button class="example" data-query="What PubMed evidence is available for empagliflozin cardiovascular outcomes?">Find publications</button>
+          </div>
+        </div>
+        <div class="empty" id="empty">Refresh one or more public sources, then ask a focused research question.</div>
+        <div class="card output" id="output" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const output = $('output');
+    function node(tag, className, text) { const el = document.createElement(tag); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; }
+    function renderReport(report) {
+      output.replaceChildren(); output.classList.add('show'); $('empty').style.display = 'none';
+      const head = node('div','output-head'); head.append(node('h3','', report.abstained ? 'Evidence gap' : 'Research report'));
+      head.append(node('span', report.abstained ? 'badge abstain' : 'badge', report.abstained ? 'Abstained' : 'Evidence linked')); output.append(head);
+      output.append(node('div','answer',report.answer));
+      if (report.evidence?.length) {
+        const section = node('section','subsection'); section.append(node('h4','',`Retrieved evidence (${report.evidence.length})`));
+        const list = node('div','evidence');
+        for (const item of report.evidence) {
+          const card = node('article','evidence-item');
+          const title = node('div','evidence-title'); const link = node('a','',item.title); link.href=item.url; link.target='_blank'; link.rel='noreferrer'; title.append(link); card.append(title);
+          card.append(node('div','evidence-meta',`${item.source} · ${item.citation_id}`)); card.append(node('p','evidence-excerpt',item.excerpt)); list.append(card);
+        }
+        section.append(list); output.append(section);
+      }
+      if (report.citations?.length) {
+        const section = node('section','subsection'); section.append(node('h4','',`Sources (${report.citations.length})`)); const list=node('div','citations');
+        for (const cite of report.citations) { const link=node('a','citation',cite.id); link.href=cite.url; link.target='_blank'; link.rel='noreferrer'; list.append(link); }
+        section.append(list); output.append(section);
+      }
+      if (report.conflicts?.length) { const section=node('section','subsection'); section.append(node('h4','','Potential evidence differences')); for (const item of report.conflicts) section.append(node('p','',item)); output.append(section); }
+      if (report.limitations?.length) { const section=node('section','subsection'); section.append(node('h4','','Limitations')); const list=node('ul','limitations'); for (const item of report.limitations) list.append(node('li','',item)); section.append(list); output.append(section); }
+    }
+    async function loadStatus() {
+      try { const response=await fetch('/api/status'); const data=await response.json(); const c=data.counts;
+        $('status').innerHTML=`<strong>${c.documents}</strong> source documents · <strong>${c.trials}</strong> trial rows · <strong>${c.chunks}</strong> searchable passages`;
+      } catch { $('status').textContent='Could not read the local database status.'; }
+    }
+    $('refresh').addEventListener('click',async()=>{
+      const drugs=[...document.querySelectorAll('#scope input:checked')].map(x=>x.value); if (!drugs.length) { $('status').textContent='Select at least one drug.'; return; }
+      const button=$('refresh'); button.disabled=true; button.textContent='Fetching records…'; $('status').textContent='Contacting the selected public sources. This can take a minute.';
+      try { const response=await fetch('/api/ingest',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({drugs})}); const data=await response.json();
+        if (!response.ok) throw new Error(data.detail || 'Source refresh failed.');
+        const states=Object.entries(data.sources).map(([name,value])=>`${name}: ${value.status}, ${value.documents} documents`).join(' · ');
+        $('status').textContent=`Refresh complete. ${data.database.documents} documents stored. ${states}`;
+      } catch (error) { $('status').textContent=error.message; $('status').classList.add('error'); }
+      finally { button.disabled=false; button.textContent='Fetch selected records'; await loadStatus(); }
+    });
+    $('importRaw').addEventListener('click',async()=>{
+      const drugs=[...document.querySelectorAll('#scope input:checked')].map(x=>x.value); if (!drugs.length) { $('status').textContent='Select at least one drug.'; return; }
+      const button=$('importRaw'); button.disabled=true; button.textContent='Importing local files…';
+      try { const response=await fetch('/api/import-raw',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({drugs})}); const data=await response.json();
+        if (!response.ok) throw new Error(data.detail || 'Local import failed.');
+        $('status').textContent=`Imported ${data.documents_saved} documents and ${data.trials_saved} trial rows from local source snapshots.`;
+      } catch (error) { $('status').textContent=error.message; $('status').classList.add('error'); }
+      finally { button.disabled=false; button.textContent='Import files from data/raw'; await loadStatus(); }
+    });
+    $('ask').addEventListener('click',async()=>{
+      const button=$('ask'); const question=$('question').value.trim(); if (!question) { $('question').focus(); return; }
+      button.disabled=true; button.textContent='Searching…'; output.classList.add('show'); output.replaceChildren(node('div','answer','Checking the local registry and evidence store…')); $('empty').style.display='none';
+      try { const response=await fetch('/api/research',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question})}); const data=await response.json(); if (!response.ok) throw new Error(data.detail || 'Research request failed.'); renderReport(data); }
+      catch (error) { output.replaceChildren(node('div','answer error',error.message)); }
+      finally { button.disabled=false; button.textContent='Research'; }
+    });
+    document.querySelectorAll('.example').forEach(button=>button.addEventListener('click',()=>{$('question').value=button.dataset.query;$('question').focus();}));
+    loadStatus();
+  </script>
+</body>
+</html>
